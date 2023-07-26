@@ -84,6 +84,7 @@ async function getHot() {
 }
 /* ----- HANDELS ----- */
 
+
 const onMessage = async (senderId, message) => {
   const user = await userDb(senderId);
   const iterations = 5;
