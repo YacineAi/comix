@@ -6,7 +6,6 @@ const { createClient } = require("@supabase/supabase-js");
 const supabase = createClient(process.env.SB_URL, process.env.SB_KEY, {
   auth: { persistSession: false },
 });
-const port = process.env.PORT || 3000;
 const Botly = require("botly");
 const botly = new Botly({
   accessToken: process.env.PAGE_ACCESS_TOKEN,
@@ -91,11 +90,11 @@ const onMessage = async (senderId, message) => {
   const timer = (ms) => new Promise((res) => setTimeout(res, ms));
   if (message.message.text) {
     if (user[0]) {
-      if(message.message.text.length <= 3 && !isNaN(message.message.text)) {
+      if(message.message.text.length <= 4 && !isNaN(message.message.text)) {
         var poz = parseInt(message.message.text);
         if(user[0].mode == "chapter") {
           var manga = await axios.get(`https://mslayed.onrender.com/manga/${user[0].mid}`);
-          if (poz == "0" || poz == "00" || poz == "000") {
+          if (poz == "0" || poz == "00" || poz == "000" || poz == "0000") {
             botly.sendText({id: senderId,text: "الله عليك :) حاسب نـفسك أذكــى من المبرمج ؟"});
           } else if (poz > manga.data.total) {
             botly.sendText({id: senderId,text: `خطأ ⛔\nهناك (${manga.data.total}) فصل و انت إخترت (${poz}).\nالرجاء إختيار فصل موجود 😴.`});
@@ -135,7 +134,7 @@ const onMessage = async (senderId, message) => {
       } else if (user[0].mode == "read") {
         var epo = await axios.get(`https://mslayed.onrender.com/chapter/${user[0].chapter}`);
         var mipoz = await axios.get(`https://mslayed.onrender.com/manga/${user[0].mid}`);
-        if (poz == "0" || poz == "00" || poz == "000") {
+        if (poz == "0" || poz == "00" || poz == "000" || poz == "0000") {
           botly.sendText({id: senderId,text: "الله عليك :) حاسب نـفسك أذكــى من المبرمج ؟"});
         } else if (poz > epo.data.total) {
           botly.send({
@@ -707,4 +706,4 @@ const onPostBack = async (senderId, message, postback) => {
   }
 };
 /* ----- HANDELS ----- */
-app.listen(port, () => console.log(`App is on port : ${port}`));
+app.listen(3000, () => console.log(`App is on port : 3000`));
