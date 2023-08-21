@@ -2,6 +2,8 @@ const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
 const axios = require("axios");
+const ejs = require("ejs");
+const os = require('os');
 const { createClient } = require("@supabase/supabase-js");
 const supabase = createClient(process.env.SB_URL, process.env.SB_KEY, {
   auth: { persistSession: false },
@@ -12,8 +14,41 @@ const botly = new Botly({
   notificationType: Botly.CONST.REGULAR,
   FB_URL: "https://graph.facebook.com/v2.6/",
 });
-app.get("/", function (_req, res) {
-  res.sendStatus(200);
+
+function formatBytes(bytes) {
+  const sizes = ["Bytes", "KB", "MB", "GB", "TB"];
+  if (bytes === 0) return "0 Byte";
+  const i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
+  return Math.round(bytes / Math.pow(1024, i), 2) + " " + sizes[i];
+}
+
+app.use(express.static("public"));
+
+app.set("view engine", "ejs");
+
+
+app.get("/", (req, res) => {
+  const memoryUsage = process.memoryUsage();
+  let uptimeInSeconds = process.uptime();
+
+  let uptimeString = "";
+  if (uptimeInSeconds < 60) {
+    uptimeString = `${uptimeInSeconds.toFixed()} seconds`;
+  } else if (uptimeInSeconds < 3600) {
+    uptimeString = `${(uptimeInSeconds / 60).toFixed()} minutes`;
+  } else if (uptimeInSeconds < 86400) {
+    uptimeString = `${(uptimeInSeconds / 3600).toFixed()} hours`;
+  } else {
+    uptimeString = `${(uptimeInSeconds / 86400).toFixed()} days`;
+  }
+
+  const osInfo = {
+    totalMemoryMB: (os.totalmem() / (1024 * 1024)).toFixed(2),
+    freeMemoryMB: (os.freemem() / (1024 * 1024)).toFixed(2),
+    cpus: os.cpus(),
+  };
+
+  res.render("index", { memoryUsage, uptimeString, formatBytes, osInfo });
 });
 /* ----- ESSENTIALS ----- */
 app.use(bodyParser.json());
