@@ -245,7 +245,7 @@ const onMessage = async (senderId, message) => {
                 response.data.data.slice(0, 4).forEach((x) => {
                   const contents = {
                     title: x.manga_name,
-                    image_url: x.manga_cover_image_url,
+                    image_url: `https://mslay.glitch.me/cover/fit?imageUrl=${x.manga_cover_image_url}`,
                     subtitle: x.manga_genres,
                     buttons: [
                       botly.createPostbackButton("قراءة المانغا 📖",`${x.manga_id}`),
@@ -260,7 +260,7 @@ const onMessage = async (senderId, message) => {
               response.data.data.forEach((x) => {
                 const contents = {
                   title: x.manga_name,
-                  image_url: x.manga_cover_image_url,
+                  image_url: `https://mslay.glitch.me/cover/fit?imageUrl=${x.manga_cover_image_url}`,
                   subtitle: x.manga_genres,
                   buttons: [
                     botly.createPostbackButton("قراءة المانغا 📖",`${x.manga_id}`),
@@ -277,7 +277,7 @@ const onMessage = async (senderId, message) => {
                 response.data.data.slice(0, 4).forEach((x) => {
                   const contents = {
                     title: x.manga_name,
-                    image_url: x.manga_cover_image_url,
+                    image_url: `https://mslay.glitch.me/cover/fit?imageUrl=${x.manga_cover_image_url}`,
                     subtitle: x.manga_genres,
                     buttons: [
                       botly.createPostbackButton("قراءة المانغا 📖",`${x.manga_id}`),
@@ -292,7 +292,7 @@ const onMessage = async (senderId, message) => {
               response.data.data.slice(0, 9).forEach((x) => {
                 const contents = {
                   title: x.manga_name,
-                  image_url: x.manga_cover_image_url,
+                  image_url: `https://mslay.glitch.me/cover/fit?imageUrl=${x.manga_cover_image_url}`,
                   subtitle: x.manga_genres,
                   buttons: [
                     botly.createPostbackButton("قراءة المانغا 📖",`${x.manga_id}`),
