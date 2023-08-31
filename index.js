@@ -129,7 +129,7 @@ const onMessage = async (senderId, message) => {
       if(message.message.text.length <= 4 && !isNaN(message.message.text)) {
         var poz = parseInt(message.message.text);
         if(user[0].mode == "chapter") {
-          var manga = await axios.get(`https://mslay.glitch.me/manga/${user[0].mid}`);
+          var manga = await axios.get(`https://mslayed.onrender.com/manga/${user[0].mid}`);
           if (poz == "0" || poz == "00" || poz == "000" || poz == "0000") {
             botly.sendText({id: senderId,text: "الله عليك :) حاسب نـفسك أذكــى من المبرمج ؟"});
           } else if (poz > manga.data.total) {
@@ -141,7 +141,7 @@ const onMessage = async (senderId, message) => {
             botly.createWebURLButton("حساب المطور 💻👤", "facebook.com/0xNoti/")
           ]
         });}
-            var chapter = await axios.get(`https://mslay.glitch.me/chapter/${manga.data.data[manga.data.total - poz].chapter_id}`);
+            var chapter = await axios.get(`https://mslayed.onrender.com/chapter/${manga.data.data[manga.data.total - poz].chapter_id}`);
             botly.sendText({id: senderId,text: `‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ~ ${manga.data.data[manga.data.total - poz].chapter_name} ~
 ---------------< 1/${chapter.data.total} >---------------
      `}, async () => {
@@ -168,8 +168,8 @@ const onMessage = async (senderId, message) => {
           });
         }
       } else if (user[0].mode == "read") {
-        var epo = await axios.get(`https://mslay.glitch.me/chapter/${user[0].chapter}`);
-        var mipoz = await axios.get(`https://mslay.glitch.me/manga/${user[0].mid}`);
+        var epo = await axios.get(`https://mslayed.onrender.com/chapter/${user[0].chapter}`);
+        var mipoz = await axios.get(`https://mslayed.onrender.com/manga/${user[0].mid}`);
         if (poz == "0" || poz == "00" || poz == "000" || poz == "0000") {
           botly.sendText({id: senderId,text: "الله عليك :) حاسب نـفسك أذكــى من المبرمج ؟"});
         } else if (poz > epo.data.total) {
@@ -237,7 +237,7 @@ const onMessage = async (senderId, message) => {
         }
       }
       } else {
-        axios.get(`https://mslay.glitch.me/search/${message.message.text}`)
+        axios.get(`https://mslayed.onrender.com/search/${message.message.text}`)
         .then((response) => {
           if (response.data.total != 0) {
             if (response.data.total <= 10) {
@@ -245,7 +245,7 @@ const onMessage = async (senderId, message) => {
                 response.data.data.slice(0, 4).forEach((x) => {
                   const contents = {
                     title: x.manga_name,
-                    image_url: `https://mslay.glitch.me/cover/fit?imageUrl=${x.manga_cover_image_url}`,
+                    image_url: x.manga_cover_image_url,
                     subtitle: x.manga_genres,
                     buttons: [
                       botly.createPostbackButton("قراءة المانغا 📖",`${x.manga_id}`),
@@ -260,7 +260,7 @@ const onMessage = async (senderId, message) => {
               response.data.data.forEach((x) => {
                 const contents = {
                   title: x.manga_name,
-                  image_url: `https://mslay.glitch.me/cover/fit?imageUrl=${x.manga_cover_image_url}`,
+                  image_url: x.manga_cover_image_url,
                   subtitle: x.manga_genres,
                   buttons: [
                     botly.createPostbackButton("قراءة المانغا 📖",`${x.manga_id}`),
@@ -277,7 +277,7 @@ const onMessage = async (senderId, message) => {
                 response.data.data.slice(0, 4).forEach((x) => {
                   const contents = {
                     title: x.manga_name,
-                    image_url: `https://mslay.glitch.me/cover/fit?imageUrl=${x.manga_cover_image_url}`,
+                    image_url: x.manga_cover_image_url,
                     subtitle: x.manga_genres,
                     buttons: [
                       botly.createPostbackButton("قراءة المانغا 📖",`${x.manga_id}`),
@@ -292,7 +292,7 @@ const onMessage = async (senderId, message) => {
               response.data.data.slice(0, 9).forEach((x) => {
                 const contents = {
                   title: x.manga_name,
-                  image_url: `https://mslay.glitch.me/cover/fit?imageUrl=${x.manga_cover_image_url}`,
+                  image_url: x.manga_cover_image_url,
                   subtitle: x.manga_genres,
                   buttons: [
                     botly.createPostbackButton("قراءة المانغا 📖",`${x.manga_id}`),
@@ -362,10 +362,10 @@ const onPostBack = async (senderId, message, postback) => {
       const countsArray = Object.entries(counts).sort((a, b) => b[1] - a[1]);
       if (user[0].os == "lite") {
         countsArray.slice(0, 4).forEach(async (x) => {
-          var info = await axios.get(`https://mslay.glitch.me/details/${x[0]}`);
+          var info = await axios.get(`https://mslayed.onrender.com/details/${x[0]}`);
           const contents = {
             title: info.data.manga_name,
-            image_url: `https://mslay.glitch.me/cover/fit?imageUrl=${info.data.manga_cover_image_url}`,
+            image_url: info.data.manga_cover_image_url,
             subtitle: info.data.manga_genres,
             buttons: [
               botly.createPostbackButton("قراءة المانغا 📖", info.data.manga_id),
@@ -382,10 +382,10 @@ const onPostBack = async (senderId, message, postback) => {
       } else {
         const list = await Promise.all(
           countsArray.slice(0, 9).map(async (x) => {
-            var info = await axios.get(`https://mslay.glitch.me/details/${x[0]}`);
+            var info = await axios.get(`https://mslayed.onrender.com/details/${x[0]}`);
             const contents = {
               title: info.data.manga_name,
-              image_url: `https://mslay.glitch.me/cover/fit?imageUrl=${info.data.manga_cover_image_url}`,
+              image_url: info.data.manga_cover_image_url,
               subtitle: info.data.manga_genres,
               buttons: [
                 botly.createPostbackButton("قراءة المانغا 📖", info.data.manga_id),
@@ -440,7 +440,7 @@ const onPostBack = async (senderId, message, postback) => {
               ],
             });
           }
-          var mread = await axios.get(`https://mslay.glitch.me/manga/${postback}`);
+          var mread = await axios.get(`https://mslayed.onrender.com/manga/${postback}`);
           let btns = [];
           if (mread.data.total < 12) {
             mread.data.data.forEach((x, i) => {
@@ -481,8 +481,8 @@ const onPostBack = async (senderId, message, postback) => {
         }
       );
     } else if (message.postback.title == "وصف المانغا ℹ️") {
-      var mread = await axios.get(`https://mslay.glitch.me/manga/${postback}`);
-      var info = await axios.get(`https://mslay.glitch.me/details/${postback}`);
+      var mread = await axios.get(`https://mslayed.onrender.com/manga/${postback}`);
+      var info = await axios.get(`https://mslayed.onrender.com/details/${postback}`);
       botly.send({
         id: senderId,
         message: {
@@ -499,7 +499,7 @@ const onPostBack = async (senderId, message, postback) => {
     }
   } else {
     if (message.message.text.startsWith("الفصل التالي ⏪")) {
-      var nextCp = await axios.get(`https://mslay.glitch.me/manga/${postback}`);
+      var nextCp = await axios.get(`https://mslayed.onrender.com/manga/${postback}`);
       if (nextCp.data.total == nextCp.data.data[cp].chapter_number) {
         botly.sendButtons({
           id: senderId,
@@ -516,7 +516,7 @@ const onPostBack = async (senderId, message, postback) => {
             botly.createWebURLButton("حساب المطور 💻👤", "facebook.com/0xNoti/")
           ]
         });} 
-        var rnxtCp = await axios.get(`https://mslay.glitch.me/chapter/${nextCp.data.data[cp - 1].chapter_id}`);
+        var rnxtCp = await axios.get(`https://mslayed.onrender.com/chapter/${nextCp.data.data[cp - 1].chapter_id}`);
         botly.sendText({id: senderId,text: `‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ‎ ~ ${nextCp.data.data[cp - 1].chapter_name} ~
 ---------------< 1/${rnxtCp.data.total} >---------------
      `}, async () => {
@@ -551,7 +551,7 @@ const onPostBack = async (senderId, message, postback) => {
             botly.createWebURLButton("حساب المطور 💻👤", "facebook.com/0xNoti/")
           ]
         });}
-      var lnChap = await axios.get(`https://mslay.glitch.me/chapter/${prts[0]}`);
+      var lnChap = await axios.get(`https://mslayed.onrender.com/chapter/${prts[0]}`);
       botly.sendText({id: senderId,text: `---------------< 1/${lnChap.data.total} >---------------`}, async () => {
         botly.sendAttachment({
           id: senderId,
@@ -575,7 +575,7 @@ const onPostBack = async (senderId, message, postback) => {
       });
       });
     } else if (message.message.text.startsWith("التالي ◀️")) {
-      var chapter = await axios.get(`https://mslay.glitch.me/chapter/${postback}`);
+      var chapter = await axios.get(`https://mslayed.onrender.com/chapter/${postback}`);
       var chaplen = chapter.data.data.length;
       await updateUser(senderId, { ep: Math.min(ep + iterations, chapter.data.data.length) }).then(async (data, error) => {
         if (error) {botly.sendButtons({id: senderId, text: "حدث خطأ 4️⃣0️⃣4️⃣\nراسل المطور 💬 للإبلاغ عن المشكلة 😰",
@@ -667,7 +667,7 @@ const onPostBack = async (senderId, message, postback) => {
             botly.createWebURLButton("حساب المطور 💻👤", "facebook.com/0xNoti/")
           ]
         });}
-            var chapter = await axios.get(`https://mslay.glitch.me/chapter/${prts[0]}`);
+            var chapter = await axios.get(`https://mslayed.onrender.com/chapter/${prts[0]}`);
             botly.sendText({id: senderId,text: `---------------< 1/${chapter.data.total} >---------------`}, async () => {
               botly.sendAttachment({
           id: senderId,
@@ -691,7 +691,7 @@ const onPostBack = async (senderId, message, postback) => {
       });
           });
     } else if (postback == "backcp") {
-      var seeChapters = await axios.get(`https://mslay.glitch.me/manga/${user[0].mid}`);
+      var seeChapters = await axios.get(`https://mslayed.onrender.com/manga/${user[0].mid}`);
       await updateUser(senderId, { mode: "chapter"})
       .then(async (data, error) => {
           if (error) {
